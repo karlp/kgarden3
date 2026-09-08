@@ -1,0 +1,3 @@
+[submodule "extern/micropython"]
+	path = extern/micropython
+	url = git@github.com:micropython/micropython.git
