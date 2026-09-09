@@ -1,3 +1,6 @@
 [submodule "extern/micropython"]
 	path = extern/micropython
 	url = git@github.com:micropython/micropython.git
+[submodule "extern/st7789_mpy"]
+	path = extern/st7789_mpy
+	url = https://github.com/russhughes/st7789_mpy.git
