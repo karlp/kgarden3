@@ -1,14 +1,8 @@
-cmake_minimum_required(VERSION 3.16)
-
-get_filename_component(PROJECT_DIR "../.." ABSOLUTE)
-set(MICROPY_PORT_DIR ${PROJECT_DIR}/extern/micropython/ports/esp32)
-get_filename_component(MICROPY_BOARD_DIR "." ABSOLUTE)
-
 #####
 # Everything below here is copied from upstream, basically, just variants stripped out
 # and lockfile comparisons stripped out
 # We'd really like it to have more of it moved to esp32_common.cmake so we can include it easier...
-# TODO: user frozen manifest?
+# (We're still generating lockfiles, which seems pretty pointless when there's nothign to compare them with)
 
 # Define the output sdkconfig so it goes in the build directory.
 set(SDKCONFIG ${CMAKE_BINARY_DIR}/sdkconfig)
@@ -31,9 +25,18 @@ set(SDKCONFIG_DEFAULTS ${CMAKE_BINARY_DIR}/sdkconfig.combined)
 include($ENV{IDF_PATH}/tools/cmake/project.cmake)
 
 # Generate individual dependencies.lock files based on chip target
-# KARL - if we edit this, we dont' need to have a dummy file in lockfiles?
-set(LOCKFILE_PATH lockfiles/dependencies.lock.${IDF_TARGET})
+set(LOCKFILE_PATH dependencies.lock.${IDF_TARGET})
 idf_build_set_property(DEPENDENCIES_LOCK ${LOCKFILE_PATH})
 
-# Define the project.
-project(micropython)
+##### Karl extra magic to autocreate mpconfigboard.h automatically
+# Instead of having yet another file to manually update when making new boards
+if(NOT DEFINED MICROPY_HW_BOARD_NAME)
+    cmake_path(GET CMAKE_CURRENT_SOURCE_DIR FILENAME MICROPY_HW_BOARD_NAME)
+endif()
+if(NOT DEFINED MICROPY_HW_MCU_NAME)
+    set(MICROPY_HW_MCU_NAME "${IDF_TARGET}")
+endif()
+configure_file(
+    "${CMAKE_CURRENT_LIST_DIR}/mpconfigboard.h.in"
+    "${MICROPY_BOARD_DIR}/mpconfigboard.h"
+)

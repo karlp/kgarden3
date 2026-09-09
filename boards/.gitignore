@@ -1,0 +1,4 @@
+mpconfigboard.h
+dependencies.lock.*
+build/
+managed_components/
