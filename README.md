@@ -1,3 +1,10 @@
+# Obsolete
+Decided to just keep this all in the [ktwinkler repo](https://github.com/karlp/ktwinkler/), where most of the hardware is already anyway.
+
+At least we used this to update our micropython custom board setups :)
+
+# Original below...
+
 # Karl's Garden v something or other
 Repo for hardware, software and scribble related to (mostly) garden decorations for halloween
 
